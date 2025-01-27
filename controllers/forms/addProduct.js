@@ -1,12 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
     const addProductButton = document.getElementById('addProductButton');
+    const addProductDiv = document.querySelector('.addProduct');
+    
+    // Hide the form initially
+    addProductDiv.style.display = 'none';
     
     // Handle the "Add Product" button click event
     addProductButton.addEventListener('click', function (event) {
         event.preventDefault(); // Prevent the link from navigating
 
+        // Show the form when the button is clicked
+        addProductDiv.style.display = 'block';
+
         // Create the form dynamically
-        const addProductDiv = document.querySelector('.addProduct');
         addProductDiv.innerHTML = `
             <h2>Add a New Product</h2>
             <form id="productForm" class="product-form">
@@ -47,7 +53,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const price = document.getElementById('price').value;
             const images = document.getElementById('productImages').files;
 
-            // Display feedback below the form
+            // Prepare product data
+            const product = {
+                name: productName,
+                description: productDescription,
+                price: parseFloat(price),
+                images: Array.from(images).map(img => URL.createObjectURL(img)) // Convert FileList to an array of image URLs
+            };
+
+            // Save product data to localStorage
+            saveProductData(category, product);
+
+            // Display feedback
             const feedbackDiv = document.getElementById('formFeedback');
             feedbackDiv.innerHTML = `
                 <h3>Product Added:</h3>
@@ -57,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p><strong>Price:</strong> $${price}</p>
                 <p><strong>Images:</strong></p>
                 <div class="image-preview">
-                    ${Array.from(images).map(img => `<img src="${URL.createObjectURL(img)}" alt="Product Image" class="product-image" />`).join('')}
+                    ${product.images.map(img => `<img src="${img}" alt="Product Image" class="product-image" />`).join('')}
                 </div>
             `;
             
@@ -66,9 +83,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
-// Toggle menu visibility (optional)
-function toggleMenu() {
-    const menu = document.querySelector('.rightMenu');
-    menu.classList.toggle('active');
-}
