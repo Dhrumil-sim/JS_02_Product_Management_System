@@ -18,21 +18,25 @@
                     <h3 class="logo">Welcome, User</h3>
                 </li>
                 <div class="rightMenu">
-                    <li><a href="#" data-page="home">Home</a></li>
-                    <li><a href="#" data-page="product-list">Product List</a></li>
-                    <li><a href="#" data-page="modify-product">Modify Product</a></li>
+                    <li><a href="#" data-page="home" id="addProductButton">Add Product</a></li>
+                    
                 </div>
             </ul>
         </nav>
     </div>
-
+    <div class="addProduct">
+          
+    </div>
+  
+    <script>
+        function toggleMenu() {
+       const menu = document.querySelector('.rightMenu');
+       menu.classList.toggle('active');  // Toggle the 'active' class to show/hide the menu
+     }
+     
+     </script>
+     <script type="module" src="./controllers/forms/addProduct.js"></script>
 </body>
-<script>
-   function toggleMenu() {
-  const menu = document.querySelector('.rightMenu');
-  menu.classList.toggle('active');  // Toggle the 'active' class to show/hide the menu
-}
 
-</script>
 
 </html>
