@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Cart</title>
+    <link rel="stylesheet" href="./design/style/style.css">
+    <link rel="shortcut icon" href="./design/assets/favicon.svg" type="image/x-icon">
+</head>
+
+<body>
+    <div class="header">
+        <nav>
+            <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+            <ul id="navbar">
+                <li>
+                    <h3 class="logo">Welcome, User</h3>
+                </li>
+                <div class="rightMenu">
+                    <li><a href="#" data-page="home">Home</a></li>
+                    <li><a href="#" data-page="product-list">Product List</a></li>
+                    <li><a href="#" data-page="modify-product">Modify Product</a></li>
+                </div>
+            </ul>
+        </nav>
+    </div>
+
+</body>
+<script>
+   function toggleMenu() {
+  const menu = document.querySelector('.rightMenu');
+  menu.classList.toggle('active');  // Toggle the 'active' class to show/hide the menu
+}
+
+</script>
+
+</html>

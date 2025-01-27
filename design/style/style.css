@@ -1,0 +1,108 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Header and Navbar Styling */
+  .header {
+    background-color: #333;
+    padding: 10px 20px;
+  }
+
+  .logo{
+    color: white;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    list-style-type: none;
+  }
+  
+  #navbar li {
+    padding: 10px;
+    display: inline-block;
+  }
+  
+  #navbar .left {
+    flex: 1; /* Makes the 'Welcome, User' section take up remaining space */
+  }
+  
+  #navbar .rightMenu {
+    display: flex;
+    justify-content: flex-end; /* Align items to the right */
+  }
+  
+  #navbar .rightMenu a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin-left: 10px;
+    border-radius: 4px;
+  }
+  
+  #navbar .rightMenu a:hover {
+    background-color: #555;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    nav {
+      flex-direction: column; /* Stack header and menu vertically */
+    }
+  
+    #navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    #navbar .left {
+      order: 1; /* Ensure "Welcome, User" stays on top */
+      margin-bottom: 10px;
+    }
+  
+    #navbar .rightMenu {
+      order: 2; /* Ensure menu comes below "Welcome, User" */
+      width: 100%;
+      display: none; /* Hide menu by default on mobile */
+    }
+  
+    #navbar .rightMenu.active {
+      display: flex; /* Show menu when active */
+    }
+  
+    #navbar .rightMenu a {
+      width: 100%;
+      padding: 10px;
+      text-align: left;
+      margin-left: 0;
+      margin-bottom: 5px;
+    }
+  
+    .hamburger {
+      display: block;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .hamburger {
+      display: none; /* Hide hamburger on large screens */
+    }
+  }
+  
