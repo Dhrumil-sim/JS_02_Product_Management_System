@@ -1,60 +1,132 @@
 import { getProducts } from '../utils/getProductAvailable.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-    const productCardContainer = document.querySelector('.productCard');
-    
-    // Fetch data from getProducts
-    const productData = getProducts(); 
+    const storedData = getProducts();
 
-    // Log the entire data to verify the structure
-    console.log('Product Data:', productData);
+    if (storedData) {
+        const data = JSON.parse(storedData);
+        console.log("Parsed Data:", data);
 
-    // Get the category name (assuming the first key is the category, e.g., "Electronics")
-    const categoryName = Object.keys(productData)[0];
+        const categoryContainer = document.querySelector('.category-container');
+        const fragment = document.createDocumentFragment();
+        const categories = {};
 
-    // Log the category name and its associated data
-    console.log(`Category Name: ${categoryName}`);
-    console.log(`Category Data:`, productData[categoryName]);
+        data.forEach(product => {
+            if (!categories[product.category]) {
+                categories[product.category] = [];
+            }
+            categories[product.category].push(product);
+        });
 
-    // Check if the category exists and is an array
-    if (productData && Array.isArray(productData[categoryName])) {
-        // Iterate through each product in the category
-        productData[categoryName].forEach(product => {
-            // Create a product card element
-            const productCard = document.createElement('div');
-            productCard.classList.add('product-card');
+        Object.entries(categories).forEach(([category, products]) => {
+            const categoryTitle = document.createElement('div');
+            categoryTitle.classList.add('category-title');
+            categoryTitle.innerText = category;
+            fragment.appendChild(categoryTitle);
 
-            // Product Name
-            const productName = document.createElement('h4');
-            productName.textContent = product.name;
-            productCard.appendChild(productName);
+            const productCardsContainer = document.createElement('div');
+            productCardsContainer.classList.add('product-cards');
 
-            // Product Description
-            const productDescription = document.createElement('p');
-            productDescription.textContent = product.description;
-            productCard.appendChild(productDescription);
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
 
-            // Product Price
-            const productPrice = document.createElement('p');
-            productPrice.textContent = `$${product.price}`;
-            productCard.appendChild(productPrice);
+                // Left side - Images with slideshow effect
+                const imgScroll = document.createElement('div');
+                imgScroll.classList.add('img-scroll');
 
-            // Product Images
-            const imageContainer = document.createElement('div');
-            imageContainer.classList.add('product-images');
-            
-            product.images.forEach(imageSrc => {
-                const img = document.createElement('img');
-                img.src = imageSrc;
-                img.alt = `${product.name} image`;
-                img.classList.add('product-image');
-                imageContainer.appendChild(img);
+                // Check if product has images and map through them
+                if (product.images && Array.isArray(product.images)) {
+                    product.images.forEach((imgUrl, index) => {
+                        const slide = document.createElement('div');
+                        slide.classList.add('mySlides', 'fade');
+                        const numberText = document.createElement('div');
+                        numberText.classList.add('numbertext');
+                        numberText.innerText = `${index + 1} / ${product.images.length}`;
+                        slide.appendChild(numberText);
+
+                        const imgElement = document.createElement('img');
+                        imgElement.src = imgUrl;
+                        imgElement.alt = `Product image ${index + 1}`;
+                        imgElement.style.width = "100%"; // Full width of container
+                        slide.appendChild(imgElement);
+
+                        imgScroll.appendChild(slide);
+                    });
+                }
+
+                // Right side - Product name, price, description
+                const productDetails = document.createElement('div');
+                productDetails.classList.add('product-details');
+
+                const productName = document.createElement('div');
+                productName.classList.add('product-name');
+                productName.innerHTML = `<h3>${product.name}</h3>`;
+
+                const productPrice = document.createElement('div');
+                productPrice.classList.add('product-price');
+                productPrice.innerHTML = `<h3>$${product.price}</h3>`;
+
+                const productDesc = document.createElement('div');
+                productDesc.classList.add('product-desc');
+                productDesc.innerText = product.description;
+
+                productDetails.appendChild(productName);
+                productDetails.appendChild(productPrice);
+                productDetails.appendChild(productDesc);
+
+                productCard.appendChild(imgScroll);
+                productCard.appendChild(productDetails);
+                productCardsContainer.appendChild(productCard);
+
+                // Adding hover effect to start slideshow
+                let slideIndex = 0;
+                let isHovering = false;
+                let slideshowInterval;
+
+                function startSlideshow() {
+                    const slides = imgScroll.getElementsByClassName('mySlides');
+                    const numSlides = slides.length;
+
+                    function updateSlides() {
+                        Array.from(slides).forEach(slide => slide.style.display = "none");
+                        slideIndex++;
+                        if (slideIndex > numSlides) { slideIndex = 1; } // Loop back to the first slide
+                        slides[slideIndex - 1].style.display = "block";
+                    }
+
+                    slideshowInterval = setInterval(updateSlides, 2000); // Change image every 2 seconds
+                    updateSlides(); // Start showing the first image initially
+                    isHovering = true;
+                }
+
+                function stopSlideshow() {
+                    clearInterval(slideshowInterval); // Stop the interval
+                    isHovering = false;
+                }
+
+                imgScroll.addEventListener('mouseenter', () => {
+                    if (!isHovering) {
+                        startSlideshow(); // Start slideshow if not already started
+                    }
+                });
+
+                imgScroll.addEventListener('mouseleave', () => {
+                    stopSlideshow(); // Stop slideshow when hover ends
+                });
+
+                // Initially display the first image (without hovering)
+                const slides = imgScroll.getElementsByClassName('mySlides');
+                slides[0].style.display = "block"; // Ensure the first image is displayed initially
+
             });
 
-            productCard.appendChild(imageContainer);
-            productCardContainer.appendChild(productCard);
+            fragment.appendChild(productCardsContainer);
         });
+
+        categoryContainer.appendChild(fragment);
+
     } else {
-        console.log(`No valid products found in the ${categoryName} category, or the category is not an array.`);
+        console.log("No products found in localStorage.");
     }
 });

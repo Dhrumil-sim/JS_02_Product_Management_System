@@ -227,112 +227,133 @@ button:focus {
     padding: 10px;
   }
 }
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+.hidden{
+  display: none;
 }
 
+/* Basic Styling */
 .category-container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  margin: 20px;
+  padding: 10px;
 }
 
-.category-card {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.category-heading {
-  font-size: 24px;
+.category-title {
+  font-size: 2em;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.separator {
-  width: 100%;
-  height: 2px;
-  background-color: #ddd;
-  margin: 10px 0;
-}
-
-.product-container {
+/* Product Card Styling */
+.product-cards {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start; /* Align cards to the left */
 }
 
 .product-card {
   width: 300px;
-  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column; /* Stack the image and details vertically */
+  border: 1px solid #ddd;
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.product-images {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
   overflow: hidden;
+  box-sizing: border-box; /* Prevent overflow */
+  transition: transform 0.3s ease-in-out;
+}
+
+/* On hover, make the product card lift slightly */
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Slideshow container (Image section) */
+.img-scroll {
   position: relative;
+  width: 100%; /* Full width of the product card */
+  height: 200px; /* Fixed height for the image container */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center image vertically */
 }
 
-.product-images img {
+/* Slideshow images */
+.mySlides {
+  display: none;
+  position: absolute;
+  width: 100%; /* Ensure images take full width */
+  height: 100%; /* Ensure images are responsive */
+}
+
+.mySlides img {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  height: 100%;
+  object-fit: cover; /* Maintain aspect ratio and fill the container */
+  object-position: center;
 }
 
-.product-card:hover .product-images img {
-  transform: scale(1.1); /* Hover effect */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
 }
 
-.product-info {
+@keyframes fade {
+  from { opacity: .4 }
+  to { opacity: 1 }
+}
+
+/* Product details styling */
+.product-details {
+  margin-top: 15px; /* Space between image and details */
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: flex-start;
+  max-width: 100%; /* Ensure it takes full width of the card */
+  text-align: center; /* Center text */
 }
 
-.product-info h3 {
-  font-size: 18px;
-  font-weight: bold;
+.product-name h3,
+.product-price h3 {
+  margin: 5px 0; /* Slight margin between name and price */
+  font-size: 1.1em; /* Slightly larger font size for product name and price */
 }
 
-.product-info p {
-  font-size: 14px;
-  color: #555;
+.product-desc {
+  font-size: 0.9em;
+  color: #777;
+  margin-top: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit description to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show "..." when text is too long */
+  white-space: normal; /* Allow the text to break into multiple lines */
 }
 
-.product-info .price {
-  font-size: 16px;
-  font-weight: bold;
-  color: #4CAF50;
-}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-card {
+    width: 100%; /* Full width on small screens */
+    flex-direction: column;
+    align-items: center;
+  }
 
-/* Pagination styles */
-.pagination {
-  text-align: center;
-  margin-top: 20px;
-}
+  .img-scroll {
+    width: 100%;
+    height: 250px; /* Slightly larger image area on small screens */
+  }
 
-.pagination button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0 10px;
-}
+  .product-details {
+    margin-left: 0;
+    align-items: center;
+    text-align: center;
+  }
 
-.pagination button:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
+  .product-desc {
+    font-size: 1em; /* Increase font size for readability */
+    -webkit-line-clamp: 4; /* Allow more lines on mobile */
+  }
 }
