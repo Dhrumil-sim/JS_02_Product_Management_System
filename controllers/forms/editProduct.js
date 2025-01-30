@@ -38,7 +38,7 @@ function openEditForm(productId) {
         const form = document.getElementById('editProductForm');
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             // Get updated values
             const category = document.getElementById('category').value;
             const productName = document.getElementById('productName').value;
@@ -73,3 +73,4 @@ function openEditForm(productId) {
         });
     }
 }
+// after reverting 
